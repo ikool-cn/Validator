@@ -390,7 +390,11 @@ class Validator
         $fields = explode('.', $field);
         $data = $this->_finalData;
         foreach ($fields as $field) {
-            $data = array_key_exists($field, $data) ? $data[$field] : '';
+            if (array_key_exists($field, $data)) {
+                $data = $data[$field];
+            } else {
+                return '';
+            }
         }
         return $data;
     }
