@@ -218,7 +218,6 @@ class Validator
         if ($this->fieldAutoTrim && isset($data[$field]) && (gettype($data[$field]) == 'string')) {
             $data[$field] = trim($data[$field]);
         }
-
         if (in_array('required', $rules)) {
             if (!isset($data[$field]) || !$this->required($data[$field])) {
                 if (empty($msg)) {
@@ -229,7 +228,12 @@ class Validator
             }
             $rules = array_diff($rules, ['required']);
         } else {
-            if (!isset($data[$field]) || (strlen($data[$field]) == 0 && !in_array('is_array', $rules))) {
+            if (in_array('is_array', $rules)) {
+                if (!isset($data[$field]) || !is_array($data[$field])) {
+                    $data[$field] = [];
+                }
+                $rules = array_diff($rules, ['is_array']);
+            } elseif (!isset($data[$field]) || !strlen(strval($data[$field]))) {
                 return true;
             }
         }
