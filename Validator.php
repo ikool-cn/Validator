@@ -229,7 +229,7 @@ class Validator
             }
             $rules = array_diff($rules, ['required']);
         } else {
-            if (!isset($data[$field]) || strlen($data[$field]) == 0) {
+            if (!isset($data[$field]) || (strlen($data[$field]) == 0 && !in_array('is_array', $rules))) {
                 return true;
             }
         }
